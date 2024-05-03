@@ -1,0 +1,120 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema levymoguli
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema levymoguli
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `levymoguli` DEFAULT CHARACTER SET utf8 ;
+USE `levymoguli` ;
+
+-- -----------------------------------------------------
+-- Table `levymoguli`.`artists`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `levymoguli`.`artists` (
+  `artistid` INT NOT NULL AUTO_INCREMENT,
+  `firstname` VARCHAR(45) NOT NULL,
+  `lastname` VARCHAR(45) NOT NULL,
+  `contract` VARCHAR(45) NULL,
+  PRIMARY KEY (`artistid`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `levymoguli`.`bands`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `levymoguli`.`bands` (
+  `bandid` INT NOT NULL AUTO_INCREMENT,
+  `bandname` VARCHAR(60) NOT NULL,
+  PRIMARY KEY (`bandid`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `levymoguli`.`releases`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `levymoguli`.`releases` (
+  `releaseid` INT NOT NULL AUTO_INCREMENT,
+  `releasename` VARCHAR(100) NOT NULL,
+  `media` VARCHAR(45) NULL,
+  `sales` INT NULL,
+  `releasedate` DATE NULL,
+  PRIMARY KEY (`releaseid`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `levymoguli`.`members`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `levymoguli`.`members` (
+  `bands_bandid` INT NOT NULL,
+  `artists_artistid` INT NOT NULL,
+  PRIMARY KEY (`bands_bandid`, `artists_artistid`),
+  INDEX `fk_bands_has_artists_artists1_idx` (`artists_artistid` ASC),
+  INDEX `fk_bands_has_artists_bands_idx` (`bands_bandid` ASC),
+  CONSTRAINT `fk_bands_has_artists_bands`
+    FOREIGN KEY (`bands_bandid`)
+    REFERENCES `levymoguli`.`bands` (`bandid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_bands_has_artists_artists1`
+    FOREIGN KEY (`artists_artistid`)
+    REFERENCES `levymoguli`.`artists` (`artistid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `levymoguli`.`artistreleases`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `levymoguli`.`artistreleases` (
+  `artists_artistid` INT NOT NULL,
+  `releases_releaseid` INT NOT NULL,
+  PRIMARY KEY (`artists_artistid`, `releases_releaseid`),
+  INDEX `fk_artists_has_releases_releases1_idx` (`releases_releaseid` ASC),
+  INDEX `fk_artists_has_releases_artists1_idx` (`artists_artistid` ASC),
+  CONSTRAINT `fk_artists_has_releases_artists1`
+    FOREIGN KEY (`artists_artistid`)
+    REFERENCES `levymoguli`.`artists` (`artistid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_artists_has_releases_releases1`
+    FOREIGN KEY (`releases_releaseid`)
+    REFERENCES `levymoguli`.`releases` (`releaseid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `levymoguli`.`bandreleases`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `levymoguli`.`bandreleases` (
+  `bands_bandid` INT NOT NULL,
+  `releases_releaseid` INT NOT NULL,
+  PRIMARY KEY (`bands_bandid`, `releases_releaseid`),
+  INDEX `fk_bands_has_releases_releases1_idx` (`releases_releaseid` ASC),
+  INDEX `fk_bands_has_releases_bands1_idx` (`bands_bandid` ASC),
+  CONSTRAINT `fk_bands_has_releases_bands1`
+    FOREIGN KEY (`bands_bandid`)
+    REFERENCES `levymoguli`.`bands` (`bandid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_bands_has_releases_releases1`
+    FOREIGN KEY (`releases_releaseid`)
+    REFERENCES `levymoguli`.`releases` (`releaseid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

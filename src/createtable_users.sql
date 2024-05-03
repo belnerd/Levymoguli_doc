@@ -1,0 +1,2 @@
+CREATE TABLE users
+( ID int NOT NULL AUTO_INCREMENT PRIMARY KEY,USERNAME varchar(100),EMAIL varchar(100),ROLE varchar(100),PASS varchar(100));

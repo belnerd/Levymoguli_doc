@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harjoitustyö - AB5123 / Tapio Ekman</title>
+    <style>
+        body {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        img {
+            width: 800px;
+            border: 1px solid black;
+            padding: 5px;
+        }
+        code {
+            border: 1px ridge gray;
+            display: block;
+            overflow-wrap: break-word;
+            white-space: pre-line;
+            padding: 2px;
+            background-color: lightgray;
+        }
+        .root {
+            width: 50%;
+            margin: auto;
+            border: 1px solid gray;
+        }
+        .title, .chapter {
+            width: 800px;
+            margin: 5px;
+            padding: 5px;
+        }
+        .title {
+            border-bottom: 1px solid gray;
+        }
+        .queries {
+            width: 400px;
+        }
+        .small {
+            width: 200px;
+        }
+    </style>
+    
+</head>
+<body>
+<div class="root">
+    <div class="title">
+        <h2>Levymogulin tietokanta</h2>
+    </div>
+    <div class="chapter">
+        11.8.2021<br/>
+        AB5123 / Tapio Ekman<br/>
+        Tietokannat KESÄ 2021<br/>
+        <br/>
+        <a href="vaatimus.html">Vaatimusmäärittely</a><br/>
+        <div hidden><a href="http://167.99.141.164/">Toimiva käyttöliittymä Digital Ocean dropletissä</a> (Login: poke/mon)<br/></div>
+        <a href="script.sql">Tietokannan luontiskripti</a><br/>
+        <a href="https://github.com/belnerd/levymoguli">Tietokannan MVC käyttöliittymän repositorio</a><br/>
+        <a hreF="https://www.youtube.com/watch?v=8QY91RITJKs">Videoesittely</a>
+
+    </div>
+    <div class="title">
+        <h2>Yleiskuvaus</h2>
+    </div>
+    <div class="chapter">
+        <p>Päätin tehdä harjoitustyön yksin, lähinnä koska kurssin deadline lähestyi uhkaavasti ja en ollut varma onko minulla lopulta aikaa tehdä koko hommaa.
+            Kyseessä on jonkinlainen tietokanta levymogulille artistien ja bändien julkaisuiden seuraamiselle. Koska henkilökohtaista kokemusta ko. maailmasta ei
+            juuri ole niin kerättävät tiedot perustuu mielikuvitukseen tai ajatukseen siitä, mitä nämä tiedot voisi osittain olla.
+        </p>
+    </div>
+    <div class="title">
+        <h2>Suunnittelu</h2>
+    </div>
+    <div class="chapter">
+        <p>Suunnitelma lähti liikkeellä kurssin yhdestä harjoitustehtävissä.
+            Tein siis ajatuksen pohjalta käsitemallin ja sen pohjalta ensimmäisen EER-kaavion.
+        </p>
+        <img src="src/Harjoitustyo_suunnitelma.png" alt="Suunnitelma"/>
+    </div>
+    <div class="title">
+        <h2>Toteutus</h2>
+    </div>
+    <div class="chapter">
+        <p>Kevyehkön suunnitelman pohjalta aloin toteuttamaan tietokantaa MySQL Workbenchin EER Diagram työkalulla.
+            Tässä vaiheessa ajatus tietokantaratkaisusta hieman kirkastui ja alla työstämäni visualisointi, sekä sen pohjalta Forward Engineerin
+            luoma skeeman ja taulujen luontisarja.
+        </p>
+        <img src="src/EER_diagram.png" alt="EER diagram"/>
+        <p>Kuten on nähtävissä tässä kohtaa moni moneen yhteydet on purettu ja saatu aikaiseksi kolme liitostaulua, 
+            joille keksin mielestäni kuvaat nimet (members, artistreleases, bandreleases).
+        </p>
+        <h3>Taulujen välisistä yhteyksistä</h3>
+        <p>Taulukko mielestäni rakenteeltaan hyvin salliva mutta vaatii käyttäjältä tämän vuoksi tarkkuutta.
+            Tämä on perusteltavissa esimerkiksi kokoelmalevyjen julkaisuissa, jolloin useita artisteja tai bändejä voi saada rojalteja.
+            Levymoguli voi omistaa myös 100% oikeuden julkaisuun jolloin artisteja tai bändejä ei tarvitse liittää julkaisuun.
+            Toki tässä tapauksessa olisi varmasti järkevää julkaisuun jokin omistaja liittää..
+        </p>
+        <ul>
+            <li>Artistilla voi olla monta tai ei yhtään julkaisua</li>
+            <li>Artisti voi kuulua moneen tai ei yhteenkään bändiin</li>
+            <li>Bändillä tai artistilla voi olla monta tai ei yhtään julkaisua</li>
+            <li>Julkaisuun voi liittyä monta artistia tai monta bändiä, tai ei kumpaakaan</li>
+        </ul>
+        <h3>Tietokannan taulujen luonti</h3>
+        <code id="createTables">sadas</code>
+        <h3>Artistien lisäys tietokantaan</h3>
+        <code id="insertArtists"></code>
+        <h3>Bändien lisäys tietokantaan</h3>
+        <code id="insertBands"></code>
+        <h3>Bändien jäsenien lisäys tietokantaan</h3>
+        <code id="insertMembers"></code>
+        <h3>Julkaisuiden lisäys tietokantaan</h3>
+        <code id="insertReleases"></code>
+        <h3>Julkaisuiden liittäminen artisteihin</h3>
+        <code id="insertArtistReleases"></code>
+        <h3>Julkaisuiden liittäminen bändeihin</h3>
+        <code id="insertBandReleases"></code>
+        <h3>Artistien julkaisuiden haku</h3>
+        <code id="selectArtistReleases"></code>
+        <img src="src/artistreleases.png" alt="Artistien julkaisut" class="queries"/>
+        <h3>Bändien julkaisuiden haku</h3>
+        <code id="selectBandReleases"></code>
+        <img src="src/bandreleases.png" alt="Bändien julkaisut" class="queries"/>
+        <h3>Bändien jäsenet</h3>
+        <code id="selectMembers"></code>
+        <img src="src/members.png" alt="Bändien jäsenet" class="queries"/>
+        <h3>Luodaan näkymä artistien levymyynnille</h3>
+        <code id="createArtistSales"></code>
+        <code>SELECT * FROM ArtistSales;</code>
+        <img src="src/artistsales.png" alt="Artistien myynti" class="queries"/>
+        <h3>Luodaan näkymä bändien levymyynnille</h3>
+        <code id="createBandSales"></code>
+        <code>SELECT * FROM BandSales;</code>
+        <img src="src/bandsales.png" alt="Bändien myynti" class="queries"/>
+        <h3>Luodaan näkymä bändien levymyynnille per bändin jäsen</h3>
+        <code id="createBandSalesPerMember"></code>
+        <code>SELECT * FROM BandSalesPerMember;</code>
+        <img src="src/bandsalespermember.png" alt="Bändien myynti per jäsen" class="queries"/>
+        <h3>Luodaan taulu tietokannan käyttäjiä varten</h3>
+        <code id="createUsers"></code>
+        <h3>Käyttöliittymän luonti</h3>
+        <p>Päädyin tekemään käyttöliittymän NodeJS backendin kautta toimivaksi. Toteutus on MVC mallin mukainen ja perusta on luotu webistä löytyvää tutorialia hyödyntäen.
+            Käyttöliittymän dokumentaatio löytyy alun linkeistä, Web-palvelinohjelmointi -kurssin harjoitustyönä.
+        </p>
+        <img src="src/login.png" alt="Sisäänkirjautuminen" class="small"/><br/>
+        <i>Sisäänkirjautuminen</i><br/>
+        <img src="src/artistsview.png" alt="Artistinäkymä"/><br/>
+        <i>Aloitusnäkymä, jossa listataan artistit</i><br/>
+        <img src="src/editartist.png" alt="Artistin muokkaus/poisto"/><br/>
+        <i>Näkymä, jossa voidaan muokata artistia tai poistaa artisti tietokannasta</i><br/>
+        <img src="src/addartist.png" alt="Artistin lisäys"/><br/>
+        <i>Näkymä, jossa tietokantaan voidaan lisätä uusi artisti</i><br/>
+        <p>Käyttöliittymän ensimmäisessä versiossa täysi CRUD toiminnallisuus on toteutettu ainoastaan yksittäiselle artistille.
+        </p>
+        <h3>Ohjelman julkaisu Digital Oceanin dropletissä ja tietokantapalvelimella</h3>
+        <p>Siirsin lokaalilta tietokantapalvelimelta luomani taulut ja näkymät DO tietokantapalvelimelle käyttäen MySQL Workbenchin Data migration wizardia.
+            Siirto sujui melko mutkattomasti. Alempana mainittu mitä korjauksia piti manuaalisesti tehdä, jotta kaikki toimi siirron jälkeen.
+        </p>
+        <p>Julkaisun yhteydessä tietokannan kohdalla tuli tiettyjä ongelmia vastaan,
+            jotka korjasin ALTER TABLE loitsuilla mutta enpä tullut ottaneeksi niistä mitään muistiin. Tässä dokumentoinnissa CREATE TABLE loitsut muokattu vastaamaan 
+            tilannetta ALTER ajojen jälkeen. Olin siis rikkonut nimeämiskäytänteitä käyttämällä skandinaavisia ja erikoismerkkejä parissa kohdassa.
+            Esim. nyt Bändi on Bandi ja myynti/jäsen on nyt osuus.
+        </p>
+        <p>DO käyttöliittymästä piti käydä myös tietokannan määrityksiä muokkaamassa, koska se ei salli SQL mode muutoksia suoraan. Esim ONLY_FULL_GROUP_BY asetus piti muuttaa sieltä käsin.</p>
+        <p>Itse ohjelman julkaisusta enemmän Web-palvelinohjelmointi -kurssin harjoitustyön dokumentaatiossa. </p>
+    </div>
+    <div class="title">
+        <h2>Oma arvio, työaika ja kommentit</h2>
+    </div>
+    <div class="chapter">
+        <p>Olen tyytyväinen siihen mitä sain harjoitustehtävässä aikaiseksi melko lyhyessä ajassa.
+            Tietokannan rakenne ei ole optimaalinen mutta tässä tarkoituksessa vaikuttaisi toimivan.
+            Opin harjoitustyötä tehdessä taas paljon lisää, myös kantapään kautta.
+            Käyttöliittymän kannalta olen erittäin tyytyväinen siihen, että sain toimivan järjestelmän aikaiseksi. Tiukan ajan puitteissa
+            paljon toimintoja jäi kuitenkin toteuttamatta, kuten esimerkiksi täysi CRUD toiminnallisuus myös bändeille ja julkaisuille sekä myyntidatan graafinen esittäminen.
+        </p>
+        <p>Arvioisin omaksi harjoitustehtäväarvosanaksi 3.5</p>
+        <h3>Työaika</h3>
+        <p>
+        <ul>
+            <li>Suunnittelu: 2 h</li>
+            <li>Dokumentointi: 4 h</li>
+            <li>Toteutus: 48 h</li>
+        </ul>
+        Toteutuksessa käytetyssä ajassa mukana käyttöliittymän toteutus backendeineen. Arvioisin tietokannan osuudeksi tästä noin 12h.
+        Tein työn kokonaisuudessaan yksin.
+        </p>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function parseCode(elem,file) {
+        $.ajax({
+            dataType: 'text'
+        })
+        $.get(file, function(data) {
+            $(elem).text(data);
+        });
+    }
+    $(document).ready(function() {
+        parseCode('#createTables','src/create_tables.sql')
+        parseCode('#insertArtists','src/insert_artists.sql')
+        parseCode('#insertBands','src/insert_bands.sql')
+        parseCode('#insertMembers','src/insert_members.sql')
+        parseCode('#insertReleases','src/insert_releases.sql')
+        parseCode('#insertArtistReleases','src/insert_artistreleases.sql')
+        parseCode('#insertBandReleases','src/insert_bandreleases.sql')
+        parseCode('#selectArtistReleases','src/select_artistreleases.sql')
+        parseCode('#selectBandReleases','src/select_bandreleases.sql')
+        parseCode('#selectMembers','src/select_members.sql')
+        parseCode('#createArtistSales','src/createview_artistsales.sql')
+        parseCode('#createBandSales','src/createview_bandsales.sql')
+        parseCode('#createBandSalesPerMember','src/createview_bandsalespermember.sql')
+        parseCode('#createUsers','src/createtable_users.sql')
+    });
+
+</script>
+</body>
+</html>

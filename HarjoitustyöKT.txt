@@ -1,0 +1,5 @@
+Levymoguli haluaa kerätä tietoja artistiensa tuotoksista.
+Tällaisia tuotoksia ovat julkaistut levyt, singlet jne.
+Näistä tarvitaan tietokantaan ainakin nimi, jokin yksilöivä tunniste, myyntimäärä,
+julkaisupäivämäärä.
+Lisäksi kerätään tieto yhtyeistä, artisti voi kuulua 0-n yhtyeeseen ja yhtyeeseen voi kuulua 1-n artistia.
